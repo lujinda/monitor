@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 #coding:utf8
 # Author          : tuxpy
-# Email           : q8886888@qq.com
-# Last modified   : 2015-03-13 16:01:07
+# Email           : q8886888@qq.com # Last modified   : 2015-03-16 20:00:42
 # Filename        : monitor/capture.py
 from __future__ import unicode_literals
 
@@ -13,8 +12,7 @@ except ImportError:
 
 import cv2
 from PIL import Image
-from .base import BaseMonitor
-
+from .base import BaseMonitor 
 CAPTURE_NO = 1
 
 class CaptureMonitor(BaseMonitor):
@@ -23,8 +21,7 @@ class CaptureMonitor(BaseMonitor):
     """
     def __init__(self):
         pass
-
-    def get_image(self):
+    def get_image(self): 
         capture = cv2.VideoCapture(CAPTURE_NO)
 
         ret, img = capture.read()
@@ -42,11 +39,11 @@ class CaptureMonitor(BaseMonitor):
         post_file = {'image': ('a.jpeg', img_raw_data, 'image/jpeg')}
         self.send_result(post_data, post_file)
 
-    def process_image(self, img):
+    def process_image(self, img): 
         """
         处理图片，并获取图片的原始数据
         """
-        img = cv2.resize(img, (320, 240))
+        img = cv2.resize(img, (680, 480))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = Image.fromarray(img, 'RGB')
         s_io = StringIO()

@@ -2,7 +2,7 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-14 17:45:40
+# Last modified   : 2015-03-16 20:34:13
 # Filename        : libs/wrap.py
 # Description     : 
 from __future__ import unicode_literals
@@ -20,3 +20,4 @@ def monitor_exist(func):
             return
         return func(self, *args, **kwargs)
     return wrap
+

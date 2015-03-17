@@ -2,7 +2,7 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-13 19:58:38
+# Last modified   : 2015-03-17 19:57:03
 # Filename        : handler/monitor.py
 # Description     : 
 from __future__ import unicode_literals
@@ -50,7 +50,11 @@ class MonitorHandler(WebSocketHandler, PublicHandler):
 
         result = self.get_result(client)
 
-        client.weixin.write_result(result)
+        if client.real_data_show_way == 'web':
+            client.write_result(result)
+        else:
+            client.weixin.write_result(result)
+
 
     def get_result(self, client):
         """

@@ -2,12 +2,13 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-13 15:57:25
+# Last modified   : 2015-03-17 17:37:15
 # Filename        : monitor/monitor.py
 # Description     : 监控的主类，用来解析命令，并发送结果，细节并不实现
 from __future__ import unicode_literals
 
 from .capture import CaptureMonitor
+from .system import SystemMonitor
 from public.e import MonitorException
 
 class MonitorManager(): 
@@ -17,6 +18,7 @@ class MonitorManager():
     def __init__(self):
         self.capture_map = {
                 'capture': CaptureMonitor(),
+                'system': SystemMonitor(),
                 } # 存放各种命令与监控器的对应映射关系
 
     def parse_response(self, response):

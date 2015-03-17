@@ -2,7 +2,7 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-13 19:48:29
+# Last modified   : 2015-03-16 15:40:32
 # Filename        : libs/session.py
 # Description     : 使用redis来实现tornado的session 模块
 
@@ -64,7 +64,10 @@ class WeiXinSession(SessionData):
             self['session_id'] = current_session.session_id
 
     def save(self):
-        self.session_manager.set_weixin(self.from_user, self)
+        self.session_manager.set_weixin(self)
+
+    def logout(self):
+        self.session_manager.delete_weixin(self)
 
 class SessionManager(object):
     def __init__(self, session_secret, session_timeout, session_db):
@@ -94,7 +97,7 @@ class SessionManager(object):
         return session
 
     def set_weixin(self, session):
-        self.session_db.setex(session.session_id, pickle.dumps(dict(session.items())),
+        self.session_db.setex(session.from_user, pickle.dumps(dict(session.items())),
                 self.session_timeout)
 
     def set(self, request, session):
@@ -109,6 +112,9 @@ class SessionManager(object):
         request.clear_cookie('verification')
 
         self.session_db.delete(session.session_id)
+
+    def delete_weixin(self, session):
+        self.session_db.delete(session.from_user)
 
     def _fetch(self, session_id):
         try:

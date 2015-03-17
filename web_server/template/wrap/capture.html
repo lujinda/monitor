@@ -1,0 +1,16 @@
+{%extends main.html%}
+{% block title %}
+最新监控照片
+{% end %}
+{% block body %}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{error or "最新抓拍"}}</h3>
+    </div>
+    <div class="panel-body">
+        {% if not error %}
+        <img alt="如果长时间未看到图片，请重试" src="{{img_url}}" width="100%" />
+        {% end %}
+    </div>
+</div>
+{% end %}

@@ -2,7 +2,7 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-14 18:57:12
+# Last modified   : 2015-03-17 22:41:05
 # Filename        : handler/public.py
 # Description     : 
 from __future__ import unicode_literals
@@ -30,6 +30,14 @@ class PublicHandler(RequestHandler):
     def monitor_manager(self):
         return self.application.monitor_manager
 
+    @property
+    def host(self):
+        return self.request.host
+
+    @property
+    def UA(self):
+        return self.request.headers.get('User-Agent', '')
+
 class BaseHandler(PublicHandler):
     """
     不需要实时获取信息的基类
@@ -43,8 +51,9 @@ class RealTimeHandler(BaseHandler):
     """
     用来处理实时信息的基类，同时也是微信的基类
     """
+    real_data_show_way = 'weixin' # 指定实时信息显示的载体，有weixin和web两样
     def init_data(self):
-        pass
+        self.client_id = None
 
     @property
     def monitor_id(self):
@@ -55,7 +64,7 @@ class RealTimeHandler(BaseHandler):
         """
         用来验证用户是否合法的接口
         """
-        return bool(self.monitor_id)
+        return bool(self.monitor_id) # 以monitor_id来标识用户是否已登录
 
     def init_monitor(self):
         """
@@ -69,8 +78,10 @@ class RealTimeHandler(BaseHandler):
         self.monitor = self.monitor_manager.monitor_list.get(self.monitor_id, None)
         self.monitor_manager.register_client(self)
 
+        return True
+
     def on_finish(self):
-        if self.monitor_id:
+        if self.client_id:
             self.monitor_manager.unregister_client(self)
 
     def send_response(self, response):
@@ -85,6 +96,7 @@ class RealTimeHandler(BaseHandler):
         """
         根据传入的命令，生成相应的response，并发送
         """
+        assert self.monitor_id
         response = self.__made_response(command)
         self.send_response(response)
 
